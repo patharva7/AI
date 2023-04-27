@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body style="background-color:black; color: aliceblue;">
+    <pre><h1>HILL CLIMBING</h1>
+import math
+import random
+
+def objective_fn(x):
+    """
+    Objective function to be maximized. 
+    In this case, the function is f(x) = sin(x)
+    """
+    return math.sin(x)
+
+def neighbor_fn(x):
+    """
+    Neighbor function to generate neighboring states for a given state.
+    In this case, we add a random value between -0.1 and 0.1 to the current state x to generate a new state.
+    """
+    return x + random.uniform(-0.1, 0.1)
+
+def hill_climbing(initial_state, objective_fn, neighbor_fn):
+    """
+    Hill climbing algorithm to find the state with the maximum score after a specified number of iterations.
+    """
+    state = initial_state
+    score = objective_fn(state)
+    
+    for i in range(1000):
+        neighbor = neighbor_fn(state)
+        neighbor_score = objective_fn(neighbor)
+        
+        if neighbor_score > score:
+            state = neighbor
+            score = neighbor_score
+        
+    return state
+
+# Set the initial state to 0
+initial_state = 0
+
+# Call the hill climbing algorithm to find the state with the maximum score
+max_state = hill_climbing(initial_state, objective_fn, neighbor_fn)
+
+# Compute the maximum score
+max_score = objective_fn(max_state)
+
+# Print the results
+print(f"Maximum score found: {max_score}")
+print(f"State with maximum score: {max_state}")
+    </pre>
+    <pre>
+      <h1>PROLOG STATEMENTS</h1>
+likes(ram, mango).
+girl(seema).
+likes(bill, cindy).
+color(rose, red).
+owns(john, gold).
+    </pre>
+    <pre><h1>CELSIUS FAH</h1>
+celsius_to_fahrenheit(Celsius, Fahrenheit) :-
+Fahrenheit is (Celsius * 9/5) + 32.
+  
+Now giving the instruction:
+?- celsius_to_fahrenheit(25, F).</pre>
+<pre><h1>MONKEY BANANA</h1>
+move(state(middle,onbox,middle,hasnot),
+  grasp,
+  state(middle,onbox,middle,has)).
+move(state(P,onfloor,P,H),
+  climb,
+  state(P,onbox,P,H)).
+move(state(P1,onfloor,P1,H),
+  drag(P1,P2),
+  state(P2,onfloor,P2,H)).
+move(state(P1,onfloor,B,H),
+  walk(P1,P2),
+  state(P2,onfloor,B,H)).
+canget(state(_,_,_,has)).
+canget(State1) :-
+  move(State1,_,State2),
+  canget(State2).
+To run:
+canget(state(atdoor,onfloor,atwindow,hasnot)).</pre>
+<pre><h1>DFS</h1>
+graph = {
+  '5' : ['3','7'],
+  '3' : ['2', '4'],
+  '7' : ['8'],
+  '2' : [],
+  '4' : ['8'],
+  '8' : []
+}
+
+visited = set()
+
+def dfs(visited, graph , node):
+    if node not in visited:
+        print(node)
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(visited, graph, neighbour)
+
+dfs(visited, graph, '5')</pre>
+<pre><h1>FIBONACCI,FACTORIAL</h1>
+factorial(0, 1).
+factorial(N, F) :-
+    N > 0,
+    N1 is N - 1,
+    factorial(N1, F1),
+    F is N * F1.
+
+To run:
+?- factorial(5, F).
+
+
+fib(0, 0).
+fib(1, 1).
+fib(N, F) :-
+    N > 1,
+    N1 is N - 1,
+    N2 is N - 2,
+    fib(N1, F1),
+    fib(N2, F2),
+    F is F1 + F2.
+
+To run:
+?- fib(10, F).</pre><pre><h1>4QUEEN</h1>
+def is_valid(board, row, col):
+    # check if the position is under attack by any previous queens
+    for i in range(row):
+        if board[i] == col or \
+           board[i] - i == col - row or \
+           board[i] + i == col + row:
+            return False
+    return True
+
+def n_queens(board, row, n):
+    # base case
+    if row == n:
+        print(board)
+        return
+    
+    # recursive case
+    for col in range(n):
+        if is_valid(board, row, col):
+            board[row] = col
+            n_queens(board, row + 1, n)
+            board[row] = None
+
+# initialize board with None values
+board = [None] * 4
+n_queens(board, 0, 4)
+</pre>
+<pre><h1>TSP</h1>
+% Cities are represented by their names and distances between them
+distances(a, b, 3).
+distances(a, c, 2).
+distances(a, d, 1).
+distances(b, c, 1).
+distances(b, d, 2).
+distances(c, d, 4).
+
+% Helper function to calculate the distance between two cities
+distance(City1, City2, Dist) :- distances(City1, City2, Dist).
+distance(City1, City2, Dist) :- distances(City2, City1, Dist).
+
+% TSP recursive function
+tsp(Start, Cities, Path, Cost) :-
+    permutation(Cities, [Next|Rest]),  % get all possible next cities
+    tsp(Next, Rest, [Next|Path], D),   % recursive call for the remaining cities
+    distance(Start, Next, Dist),       % calculate distance between start and next city
+    Cost is D + Dist.                  % add the distance to the previous cost
+
+% Base case for TSP recursion
+tsp(Start, [], [Start], 0).
+
+% Main predicate to solve TSP
+solve_tsp(Cities, Path, Cost) :-
+    tsp(a, Cities, Path, Cost),        % start with city 'a'
+    distance(Path, [Last|_], Dist),    % calculate distance between last city and start city
+    distance(Last, a, Dist2),          % calculate distance between last city and start city
+    Cost is Dist + Dist2.              % add both distances to get total cost
+
+To Run:
+solve_tsp([b, c, d], Path, Cost).</pre>
+<pre><h1>WATER JUG</h1>
+from collections import deque
+
+def Solution(a, b, target):
+    m = {} # dictionary to keep track of visited states
+    isSolvable = False # flag to check if problem is solvable
+    path = [] # list to store the path from initial state to solution state
+
+    q = deque()
+
+    # Initializing with jugs being empty
+    q.append((0, 0))
+
+    while (len(q) > 0):
+
+        # Current state
+        u = q.popleft()
+        
+        # Check if the current state has already been visited
+        if ((u[0], u[1]) in m):
+            continue
+        
+        # Check if the current state is valid
+        if ((u[0] > a or u[1] > b or u[0] < 0 or u[1] < 0)):
+            continue
+        
+        path.append([u[0], u[1]])
+        m[(u[0], u[1])] = 1 # Mark current state as visited
+        
+        # Check if the target amount has been achieved
+        if (u[0] == target or u[1] == target):
+            isSolvable = True
+
+            # Add the final state to the path
+            if (u[0] == target):
+                if (u[1] != 0):
+                    path.append([u[0], 0])
+            else:
+                if (u[0] != 0):
+                    path.append([0, u[1]])
+
+            # Print the path from initial state to solution state
+            sz = len(path)
+            for i in range(sz):
+                print("(", path[i][0], ",", path[i][1], ")")
+            break
+
+        # Perform all possible operations on the jugs
+        q.append([u[0], b]) # Fill Jug2
+        q.append([a, u[1]]) # Fill Jug1
+
+        for ap in range(max(a, b) + 1):
+            c = u[0] + ap
+            d = u[1] - ap
+
+            if (c == a or (d == 0 and d >= 0)):
+                q.append([c, d])
+
+            c = u[0] - ap
+            d = u[1] + ap
+
+            if ((c == 0 and c >= 0) or d == b):
+                q.append([c, d])
+
+        q.append([a, 0]) # Empty Jug1
+        q.append([0, b]) # Empty Jug2
+
+    if (not isSolvable):
+        print("Solution not possible")
+
+
+if __name__ == '__main__':
+    Jug1, Jug2, target = 4, 3, 2
+    print("Path from initial state to solution state ::")
+    Solution(Jug1, Jug2, target)
+</pre>
+<pre><h1>BFS</h1>
+from collections import deque
+
+def bfs(graph, start):
+    visited = set()  # set to keep track of visited nodes
+    queue = deque([start])  # initialize the queue with the start node
+
+    while queue:
+        node = queue.popleft()  # remove the first node from the queue
+        if node not in visited:
+            visited.add(node)
+            # do something with the current node (e.g. print its value)
+            print(node)
+            neighbors = graph[node]
+            for neighbor in neighbors:
+                if neighbor not in visited:
+                    queue.append(neighbor)  # add the neighbor to the queue
+
+graph = {'A': ['B', 'C'],
+         'B': ['D', 'E'],
+         'C': ['F'],
+         'D': [],
+         'E': ['F'],
+         'F': []}
+
+bfs(graph, 'A')</pre>
+<pre><h1>TIC-TAC-TOE</h1>
+board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
+player = 'X'
+
+def print_board():
+    for row in board:
+        print(row)
+
+def make_move(row, col):
+    global player
+    board[row][col] = player
+    if player == 'X':
+        player = 'O'
+    else:
+        player = 'X'
+
+def check_win():
+    # Check rows
+    for row in board:
+        if row[0] == row[1] == row[2] != ' ':
+            return True
+
+    # Check columns
+    for col in range(3):
+        if board[0][col] == board[1][col] == board[2][col] != ' ':
+            return True
+
+    # Check diagonals
+    if board[0][0] == board[1][1] == board[2][2] != ' ':
+        return True
+    if board[0][2] == board[1][1] == board[2][0] != ' ':
+        return True
+
+    # No winner yet
+    return False
+
+while not check_win():
+    print_board()
+    row = int(input(f"{player}'s turn. Enter row (0-2): "))
+    col = int(input(f"{player}'s turn. Enter column (0-2): "))
+    make_move(row, col)
+
+print_board()
+print("Game Over")</pre>
+<pre><h1>TOWER OF HANOI</h1>
+def hanoi(n, source, target, auxiliary):
+    """
+    Recursive solution to the Towers of Hanoi problem.
+    
+    Parameters:
+    - n: integer representing the number of disks
+    - source: string representing the starting peg ('A', 'B', or 'C')
+    - target: string representing the target peg ('A', 'B', or 'C')
+    - auxiliary: string representing the auxiliary peg ('A', 'B', or 'C')
+    """
+    
+    # Base case - if n is 0, there are no disks to move and we can return
+    if n == 0:
+        return
+    
+    # Recursive case - if n is not 0, we continue moving disks until there are no more left
+    
+    # Move n-1 disks from source to auxiliary using target as auxiliary
+    hanoi(n - 1, source, auxiliary, target)
+    
+    # Move the largest disk from source to target
+    print("Move disk", n, "from", source, "to", target)
+    
+    # Move the n-1 disks from auxiliary to target using source as auxiliary
+    hanoi(n - 1, auxiliary, target, source)
+
+hanoi(3, 'A', 'C', 'B')
+</pre>
+<pre><h1>8PUZZLE</h1>
+from collections import deque
+
+def bfs(start, goal):
+    # Initialize the queue with the start state and an empty path
+    queue = deque([(start, [])])
+    # Keep track of visited states
+    visited = set()
+    # Continue until the queue is empty
+    while queue:
+        # Pop the first state and path from the queue
+        (node, path) = queue.popleft()
+        # Print the current state
+        print(node)
+        # Check if the current state is the goal state
+        if node == goal:
+            # Return the path to the goal state
+            return path
+        # Add the current state to the visited set
+        visited.add(node)
+        # Generate all possible moves from the current state
+        for move in moves(node):
+            # Check if the move has not been visited before
+            if move not in visited:
+                # Add the move and the updated path to the queue
+                queue.append((move, path + [move]))
+    # Return None if no path is found
+    return None
+    
+def moves(node):
+    # Find the index of the empty tile (represented by 0)
+    i = node.index(0)
+    # Check if it is possible to move up
+    if i in [3, 4, 5, 6, 7, 8]:
+        yield swap(node, i, i-3)
+    # Check if it is possible to move left
+    if i in [1, 2, 4, 5, 7, 8]:
+        yield swap(node, i, i-1)
+    # Check if it is possible to move right
+    if i in [0, 1, 3, 4, 6, 7]:
+        yield swap(node, i, i+1)
+    # Check if it is possible to move down
+    if i in [0, 1, 2, 3, 4, 5]:
+        yield swap(node, i, i+3)
+
+def swap(node, i, j):
+    # Convert the tuple to a list
+    node = list(node)
+    # Swap the values at indices i and j
+    node[i], node[j] = node[j], node[i]
+    # Convert the list back to a tuple and return it
+    return tuple(node)
+    
+start = (1, 2, 3, 4, 5, 6, 0, 7, 8)
+goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+result = bfs(start, goal)
+print(result)</pre>
+<pre><h1>A STAR</h1>
+import heapq
+
+def a_star(start, goal, neighbors, heuristic):
+    frontier = [(0, start)]
+    came_from = {}
+    cost_so_far = {start: 0}
+
+    while frontier:
+        current = heapq.heappop(frontier)[1]
+        if current == goal:
+            break
+        for next in neighbors(current):
+            new_cost = cost_so_far[current] + 1
+            if next not in cost_so_far or new_cost < cost_so_far[next]:
+                cost_so_far[next] = new_cost
+                priority = new_cost + heuristic(goal, next)
+                heapq.heappush(frontier, (priority, next))
+                came_from[next] = current
+
+    path = [goal]
+    while path[-1] != start:
+        path.append(came_from[path[-1]])
+    return list(reversed(path))
+
+# Example usage
+def euclidean_distance(a, b):
+    return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+
+def neighbors(node):
+    x, y = node
+    return [(x + dx, y + dy) for dx, dy in ((1, 0), (0, 1), (-1, 0), (0, -1)) if 0 <= x + dx < 5 and 0 <= y + dy < 5]
+
+start = (0, 0)
+goal = (1, 4)
+path = a_star(start, goal, neighbors, euclidean_distance)
+print(path)
+</pre><pre><h1>FAMILY RELATIONS</h1>
+% Facts: family relationships
+male(john).
+male(jim).
+male(jack).
+female(jane).
+female(jenny).
+parent(john, jim).
+parent(john, jane).
+parent(jane, jack).
+parent(jim, jenny).
+
+% Rules: family relationships
+father(Father, Child) :-
+    male(Father),
+    parent(Father, Child).
+
+mother(Mother, Child) :-
+    female(Mother),
+    parent(Mother, Child).
+
+sibling(Sibling1, Sibling2) :-
+    parent(Parent, Sibling1),
+    parent(Parent, Sibling2),
+    Sibling1 \= Sibling2.
+
+grandparent(Grandparent, Grandchild) :-
+    parent(Parent, Grandchild),
+    parent(Grandparent, Parent).
+
+% Queries
+% Who is Jim's father?
+% Expected output: john
+?- father(john, jim).
+
+% Who are Jane's siblings?
+% Expected output: jack
+?- sibling(jane, Sibling), male(Sibling).
+
+% Who are Jenny's grandparents?
+% Expected output: john
+?- grandparent(Grandparent, jenny), male(Grandparent).
+</pre><pre><h1>HANGMAN PY</h1>
+import random
+
+def hangman(word):
+    wrong_guesses = 0
+    max_wrong_guesses = 6
+    guessed_letters = []
+    word_letters = set(word)
+    alphabet = set('abcdefghijklmnopqrstuvwxyz')
+
+    while wrong_guesses < max_wrong_guesses and word_letters:
+        print(' '.join([letter if letter in guessed_letters else '_' for letter in word]))
+        guess = input('Guess a letter: ').lower()
+
+        if guess in guessed_letters:
+            print('You already guessed that letter. Try again.')
+        elif guess not in alphabet:
+            print('Please enter a valid letter.')
+        elif guess in word_letters:
+            print('Good guess!')
+            guessed_letters.append(guess)
+            word_letters.remove(guess)
+        else:
+            print('Sorry, that letter is not in the word.')
+            wrong_guesses += 1
+            guessed_letters.append(guess)
+
+    if word_letters:
+        print('Sorry, you ran out of guesses. The word was', word)
+    else:
+        print('Congratulations, you guessed the word', word, 'in', len(guessed_letters), 'guesses!')
+
+words = ['python', 'java', 'ruby', 'csharp', 'javascript']
+word = random.choice(words)
+
+hangman(word)</pre>
+<pre><h1>BAYESIAN NETWORK</h1>
+</pre>
+from pgmpy.models import BayesianModel
+from pgmpy.inference import VariableElimination
+alarm_model = BayesianModel([('Burglary', 'Alarm'), 
+ ('Earthquake', 'Alarm'),
+ ('Alarm', 'JohnCalls'),
+ ('Alarm', 'MaryCalls')])
+#Defining the parameters using CPT
+from pgmpy.factors.discrete import TabularCPD
+cpd_burglary = TabularCPD(variable='Burglary', variable_card=2,
+ values=[[.999], [0.001]])
+cpd_earthquake = TabularCPD(variable='Earthquake', variable_card=2,
+ values=[[0.998], [0.002]])
+cpd_alarm = TabularCPD(variable='Alarm', variable_card=2,
+ values=[[0.999, 0.71, 0.06, 0.05],
+ [0.001, 0.29, 0.94, 0.95]],
+ evidence=['Burglary', 'Earthquake'],
+ evidence_card=[2, 2])
+cpd_johncalls = TabularCPD(variable='JohnCalls', variable_card=2,
+ values=[[0.95, 0.1], [0.05, 0.9]],
+ evidence=['Alarm'], evidence_card=[2])
+cpd_marycalls = TabularCPD(variable='MaryCalls', variable_card=2,
+ values=[[0.1, 0.7], [0.9, 0.3]],
+ evidence=['Alarm'], evidence_card=[2])
+# Associating the parameters with the model structure
+alarm_model.add_cpds(cpd_burglary, cpd_earthquake, cpd_alarm, cpd_johncalls, cpd_marycalls)
+alarm_model.check_model()
+alarm_model.nodes()
+alarm_model.edges()
+alarm_model.local_independencies('Burglary')
+# Infering the posterior probability
+infer = VariableElimination(alarm_model)
+posterior_p = infer.query(['JohnCalls'], evidence={'Burglary': 0, 'Earthquake': 0})
+print(posterior_p)
+# Infering the posterior probability
+infer = VariableElimination(alarm_model)
+posterior_p = infer.query(['JohnCalls', 'MaryCalls'], evidence={'Burglary': 1, 'Earthquake': 1})
+print(posterior_p)
+# Infering the posterior probability
+infer = VariableElimination(alarm_model)
+posterior_p = infer.query(['MaryCalls','Burglary'], evidence={'Alarm': 0}) #, 'Earthquake': 1})
+print(posterior_p)
+import networkx as nx
+import pylab as plt
+nx.draw(alarm_model, with_labels=True)
+plt.savefig('alarm_model.png')
+#plt.close()</body>
+</html>
