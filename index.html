@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <pre>
+      <h1>HILL CLIMBING</h1>
+      import math
+import random
+
+def objective_fn(x):
+    """
+    Objective function to be maximized. 
+    In this case, the function is f(x) = sin(x)
+    """
+    return math.sin(x)
+
+def neighbor_fn(x):
+    """
+    Neighbor function to generate neighboring states for a given state.
+    In this case, we add a random value between -0.1 and 0.1 to the current state x to generate a new state.
+    """
+    return x + random.uniform(-0.1, 0.1)
+
+def hill_climbing(initial_state, objective_fn, neighbor_fn):
+    """
+    Hill climbing algorithm to find the state with the maximum score after a specified number of iterations.
+    """
+    state = initial_state
+    score = objective_fn(state)
+    
+    for i in range(1000):
+        neighbor = neighbor_fn(state)
+        neighbor_score = objective_fn(neighbor)
+        
+        if neighbor_score > score:
+            state = neighbor
+            score = neighbor_score
+        
+    return state
+
+# Set the initial state to 0
+initial_state = 0
+
+# Call the hill climbing algorithm to find the state with the maximum score
+max_state = hill_climbing(initial_state, objective_fn, neighbor_fn)
+
+# Compute the maximum score
+max_score = objective_fn(max_state)
+
+# Print the results
+print(f"Maximum score found: {max_score}")
+print(f"State with maximum score: {max_state}")
+
+    </pre>
+
+    <pre>
+      <h1>PROLOG STATEMENTS</h1>
+      likes(ram, mango).
+girl(seema).
+likes(bill, cindy).
+color(rose, red).
+owns(john, gold).
+    </pre>
+  </body>
+</html>
